@@ -39,7 +39,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/orders"
-              onClick={() => handleMenuClick(0)}
+              onClick={() => handleMenuClick(1)}
             >
               <p className={selectMenu == 1 ? activeMenuClass : menuClass}>
                 Orders
@@ -50,7 +50,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/holdings"
-              onClick={() => handleMenuClick(0)}
+              onClick={() => handleMenuClick(2)}
             >
               <p className={selectMenu == 2 ? activeMenuClass : menuClass}>
                 Holdings
@@ -61,7 +61,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/positions"
-              onClick={() => handleMenuClick(0)}
+              onClick={() => handleMenuClick(3)}
             >
               <p className={selectMenu == 3 ? activeMenuClass : menuClass}>
                 Positions
@@ -72,7 +72,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/funds"
-              onClick={() => handleMenuClick(0)}
+              onClick={() => handleMenuClick(4)}
             >
               <p className={selectMenu == 4 ? activeMenuClass : menuClass}>
                 Funds
@@ -83,7 +83,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/apps"
-              onClick={() => handleMenuClick(0)}
+              onClick={() => handleMenuClick(5)}
             >
               <p className={selectMenu == 5 ? activeMenuClass : menuClass}>
                 Apps
