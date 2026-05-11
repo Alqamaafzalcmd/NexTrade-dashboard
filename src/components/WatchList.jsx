@@ -1,10 +1,7 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { watchlist } from "../data/data";
 
 import { Tooltip } from "@mui/material";
-import Slide from "@mui/material/Slide";
-import Zoom from "@mui/material/Zoom";
 import Grow from "@mui/material/Grow";
 
 import {
@@ -13,8 +10,12 @@ import {
   BarChartOutlined,
   MoreHoriz,
 } from "@mui/icons-material";
+import GeneralContext from "./GeneralContext";
+import BuyActionWindow from "./BuyActionWindow";
 
 const WatchList = () => {
+  const { isBuyWindowOpen, selectedStockUID } = useContext(GeneralContext);
+
   return (
     <div className="watchlist-container">
       <div className="search-container">
@@ -39,6 +40,7 @@ const WatchList = () => {
           );
         })}
       </ul>
+      {isBuyWindowOpen && <BuyActionWindow uid={selectedStockUID} />}
     </div>
   );
 };
@@ -53,7 +55,7 @@ const WatchListItem = ({ stock, index }) => {
   };
 
   const handleMouseLeave = (e) => {
-    setWatchListActions(true);
+    setWatchListActions(false);
   };
 
   return (
@@ -82,6 +84,8 @@ const WatchListItem = ({ stock, index }) => {
 };
 
 const WatchListActions = ({ uid }) => {
+  const { openBuyWindow } = useContext(GeneralContext);
+
   return (
     <span className="actions">
       <span>
@@ -91,7 +95,9 @@ const WatchListActions = ({ uid }) => {
           arrow
           transitioncomponent={Grow}
         >
-          <button className="buy">Buy</button>
+          <button className="buy" onClick={() => openBuyWindow(uid)}>
+            Buy
+          </button>
         </Tooltip>
         <Tooltip
           title="Sell (S)"
@@ -111,7 +117,13 @@ const WatchListActions = ({ uid }) => {
             <BarChartOutlined></BarChartOutlined>
           </button>
         </Tooltip>
-        <Tooltip title="More" placement="top" className="action-margin" arrow transitioncomponent={Grow}>
+        <Tooltip
+          title="More"
+          placement="top"
+          className="action-margin"
+          arrow
+          transitioncomponent={Grow}
+        >
           <button className="action">
             <MoreHoriz></MoreHoriz>
           </button>
