@@ -3,17 +3,15 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import Home from "./components/Home";
-import Login from "./components/users/Login"
+import Flash from "./Flash";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes><Route path="/*" element={<Home />}></Route></Routes>
-      
+      {/* <Flash></Flash> */}
+      <Routes>
+        <Route path="/*" element={<Home />}></Route>
+      </Routes>
     </BrowserRouter>
-    {/* <Login /> */}
   </StrictMode>,
 );
-
-
-

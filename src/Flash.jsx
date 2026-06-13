@@ -1,0 +1,99 @@
+import react, { useState, useEffect } from "react";
+import axios from "axios";
+
+function Flash() {
+  let [flash, setFlash] = useState(null);
+
+  useEffect(() => {
+    // console.log("Refreshing the state ....");
+    const getMessage = async () => {
+      const res = await axios.get("http://localhost:8080/flash-message", {
+        withCredentials: true,
+      });
+
+      //  console.log(res);
+      if (res.data.success) {
+        setFlash({
+          message: res.data.success,
+          type: "success",
+        });
+      }
+      if (res.data.error) {
+        setFlash({
+          message: res.data.error,
+          type: "error",
+        });
+      }
+
+      // console.log(res);
+    };
+
+    getMessage();
+  }, []);
+
+  if (!flash) return null;
+
+//   console.log(flash.message);
+//   console.log(flash.type);
+
+  const alertClassName =
+    flash.type === "success"
+      ? "alert alert-success alert-dismissible fade show"
+      : "alert alert-danger alert-dismissible fade show";
+
+  if (flash.type === "success") {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: "65px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "40%",
+          zIndex: 1050,
+        }}
+      >
+        <div className={alertClassName} role="alert" style={{ marginBottom: 0 }}>
+          {flash.message}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setFlash(null)}
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    );
+  }
+
+  if (flash.type === "error") {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: "65px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "40%",
+          zIndex: 1050,
+        }}
+      >
+        <div
+          className={alertClassName}
+          role="alert"
+          style={{ marginBottom: 0 }}
+        >
+          {flash.message}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setFlash(null)}
+            aria-label="Close"
+          ></button>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Flash;
