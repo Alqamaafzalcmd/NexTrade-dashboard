@@ -7,7 +7,7 @@ const Menu = () => {
   const [isProfle, setIsprofile] = useState(false);
 
   const handleMenuClick = (index) => {
-    selectMenu(index);
+    setSelectMenu(index);
   };
 
   const handleProfileClick = () => {

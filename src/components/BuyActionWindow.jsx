@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
@@ -8,28 +8,41 @@ import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
 
 const BuyActionWindow = ({ uid }) => {
+  const { closeBuyWindow } = useContext(GeneralContext);
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
-
-  const handleBuyClick = () => {
+  console.log(uid);
+  const handleBuyClick = async () => {
     console.log("Buy button clicked");
-    axios.post("http://localhost:8080/newOrder",
-      {
-        name: uid,
-        qty: stockQuantity,
-        price: stockPrice,
-        mode: "BUY",
+    const data = {
+      name: uid,
+      qty: stockQuantity,
+      price: stockPrice,
+      mode: "BUY",
+    };
+
+    try {
+      axios.post("http://localhost:8080/holdings/add", data, {
+        withCredentials: true,
       });
-      GeneralContext.closeBuyWindow();
+    } catch (err) {
+      console.log(err);
+    }
+    closeBuyWindow();
   };
 
   const handleCancelClick = () => {
-    GeneralContext.closeBuyWindow();
+    closeBuyWindow();
   };
 
   return (
     <div className="container" id="buy-window" draggable="true">
-      <h3 className="text-muted text-center" style={{color:"#b7b3b3", textAlign:"center"}}>{uid}</h3>
+      <h3
+        className="text-muted text-center"
+        style={{ color: "#b7b3b3", textAlign: "center" }}
+      >
+        {uid}
+      </h3>
       <div className="regular-order">
         <div className="inputs">
           <fieldset>
@@ -59,11 +72,10 @@ const BuyActionWindow = ({ uid }) => {
       <div className="buttons">
         <span>Margin required ₹140.65</span>
         <div>
-       
           <Link className="btn btn-blue" onClick={handleBuyClick}>
             Buy
           </Link>
-          <Link  className="btn btn-grey" onClick={handleCancelClick}>
+          <Link className="btn btn-grey" onClick={handleCancelClick}>
             Cancel
           </Link>
         </div>

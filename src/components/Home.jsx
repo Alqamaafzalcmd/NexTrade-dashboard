@@ -2,13 +2,13 @@ import React from "react";
 
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
-import Flash from "../Flash"
+import Flash from "../Flash";
 
 const Home = () => {
   return (
     <>
+      <Flash />
       <TopBar />
-      <Flash></Flash>
       <Dashboard />
     </>
   );
