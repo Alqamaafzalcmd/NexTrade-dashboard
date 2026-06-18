@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react";
-import { watchlist } from "../data/data";
+import React, { useContext, useState, useEffect } from "react";
+// import { watchlist } from "../data/data";
+import { stockData } from "../data/stockData";
 
 import { Tooltip } from "@mui/material";
 import Grow from "@mui/material/Grow";
@@ -13,8 +14,66 @@ import {
 import GeneralContext from "./GeneralContext";
 import BuyActionWindow from "./BuyActionWindow";
 
+import axios from "axios";
+
+let getData = async (symbol) => {
+  try {
+    const res = await axios.get(
+      `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${import.meta.env.VITE_TOKEN_KEY}`,
+    );
+    //  console.log(res);
+    return res.data;
+  } catch (err) {
+    return "not found";
+  }
+};
+
+async function getWatchlistData() {
+  const data = await Promise.all(
+    stockData.map(async (stock) => {
+      const currStock = await getData(stock.symbol);
+
+      return {
+        symbol: stock.symbol,
+        companyName: stock.companyName,
+        currentPrice: currStock.c,
+        change: currStock.d,
+        changePercent: currStock.dp,
+        high: currStock.h,
+        low: currStock.l,
+        open: currStock.o,
+        previousClose: currStock.pc,
+      };
+    }),
+  );
+  return data;
+}
+
+// const watchlist = await getWatchlistData();
+
 const WatchList = () => {
+  const [watchlist, setWatchlist] = useState([]);
+
   const { isBuyWindowOpen, selectedStockUID } = useContext(GeneralContext);
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const data = await getWatchlistData();
+      if(data){
+         setWatchlist(data);
+         console.log(data);
+      }
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 50000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // console.log(watchlist);
 
   return (
     <div className="watchlist-container">
@@ -58,6 +117,7 @@ const WatchListItem = ({ stock, index }) => {
     setWatchListActions(false);
   };
 
+
   return (
     <li
       onMouseEnter={handleMouseEnter}
@@ -65,19 +125,21 @@ const WatchListItem = ({ stock, index }) => {
       key={index}
     >
       <div className="item">
-        <p className={stock.isDown ? "down" : "up"}>{stock.name}</p>
+        <p className={stock.change < 0 ? "down" : "up"}>{stock.companyName}</p>
         <div className="itemInfo">
-          <span className="percent">{stock.percent}</span>
-          {stock.isDown ? (
+          <span className="percent">{stock.change}</span>
+          {stock.change < 0 ? (
             <KeyboardArrowDown className="down" />
           ) : (
             <KeyboardArrowUp className="up" />
           )}
-          <span className="price">{stock.price}</span>
+          <span className={stock.change < 0 ? "down" : "up"}>
+            {stock.currentPrice}
+          </span>
         </div>
       </div>
       {showWatchlistActions && (
-        <WatchListActions uid={stock.name}></WatchListActions>
+        <WatchListActions uid={stock.companyName}></WatchListActions>
       )}
     </li>
   );
