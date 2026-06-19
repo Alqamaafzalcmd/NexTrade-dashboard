@@ -11,7 +11,7 @@ const Holdings = () => {
       // console.log(res);
       setAllHoldings(res.data);
     });
-  }, [allHoldings]);
+  }, [allHoldings]); // fetch the latest record
 
   return (
     <>
@@ -35,23 +35,22 @@ const Holdings = () => {
 
           <tbody>
             {allHoldings.map((stock, index) => {
-              const currValue = stock.price * stock.qty;
-              const isProfit = currValue - stock.avg * stock.qty >= 0.0;
-              const profitClass = isProfit ? "profit" : "loss";
-              const dayClass = stock.isLoss ? "loss" : "profit";
+
+              const pnlClass = stock.pnl >= 0 ? "profit" : "loss";
+                const netClass = stock.netChange >= 0 ? "profit" : "loss";
+                  const dayClass = stock.dayChange >= 0 ? "profit" : "loss";
+             
 
               return (
                 <tr key={index}>
-                  <td>{stock.name}</td>
+                  <td>{stock.instrument}</td>
                   <td>{stock.qty}</td>
-                  <td>{stock.avg.toFixed(2)}</td>
-                  <td>{stock.price.toFixed(2)}</td>
-                  <td>{currValue}</td>
-                  <td className={profitClass}>
-                    {(currValue - stock.avg * stock.qty).toFixed(2)}
-                  </td>
-                  <td className={profitClass}>{stock.net}</td>
-                  <td className={dayClass}>{stock.day}</td>
+                  <td>{stock.avgCost.toFixed(3)}</td>
+                  <td>{stock.ltp.toFixed(3)}</td>
+                  <td>{stock.currentValue}</td>
+                  <td className={pnlClass}>{stock.pnl.toFixed(3)}</td>
+                  <td className={netClass}>{stock.netChange.toFixed(3)}</td>
+                  <td className={dayClass}>{stock.dayChange.toFixed(3)}</td>
                 </tr>
               );
             })}

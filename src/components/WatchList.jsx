@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 // import { watchlist } from "../data/data";
-import { stockData } from "../data/stockData";
+// import { stockData } from "../data/stockData";
 
 import { Tooltip } from "@mui/material";
 import Grow from "@mui/material/Grow";
@@ -16,40 +16,6 @@ import BuyActionWindow from "./BuyActionWindow";
 
 import axios from "axios";
 
-let getData = async (symbol) => {
-  try {
-    const res = await axios.get(
-      `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${import.meta.env.VITE_TOKEN_KEY}`,
-    );
-    //  console.log(res);
-    return res.data;
-  } catch (err) {
-    return "not found";
-  }
-};
-
-async function getWatchlistData() {
-  const data = await Promise.all(
-    stockData.map(async (stock) => {
-      const currStock = await getData(stock.symbol);
-
-      return {
-        symbol: stock.symbol,
-        companyName: stock.companyName,
-        currentPrice: currStock.c,
-        change: currStock.d,
-        changePercent: currStock.dp,
-        high: currStock.h,
-        low: currStock.l,
-        open: currStock.o,
-        previousClose: currStock.pc,
-      };
-    }),
-  );
-  return data;
-}
-
-// const watchlist = await getWatchlistData();
 
 const WatchList = () => {
   const [watchlist, setWatchlist] = useState([]);
@@ -59,10 +25,10 @@ const WatchList = () => {
   useEffect(() => {
 
     const fetchData = async () => {
-      const data = await getWatchlistData();
-      if(data){
-         setWatchlist(data);
-         console.log(data);
+      const res = await axios.get("http://localhost:8080/watchlist");
+      if(res){
+         setWatchlist(res.data);
+         console.log(res.data);
       }
     };
 
@@ -125,7 +91,7 @@ const WatchListItem = ({ stock, index }) => {
       key={index}
     >
       <div className="item">
-        <p className={stock.change < 0 ? "down" : "up"}>{stock.companyName}</p>
+        <p className={stock.change < 0 ? "down" : "up"}>{stock.name}</p>
         <div className="itemInfo">
           <span className="percent">{stock.change}</span>
           {stock.change < 0 ? (
@@ -139,7 +105,9 @@ const WatchListItem = ({ stock, index }) => {
         </div>
       </div>
       {showWatchlistActions && (
-        <WatchListActions uid={stock.companyName}></WatchListActions>
+        <WatchListActions
+          uid={[stock.symbol, stock.name]}
+        ></WatchListActions>
       )}
     </li>
   );

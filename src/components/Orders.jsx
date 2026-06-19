@@ -1,16 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Orders = () => {
-   const [allOrders, setOrders] = useState([]);
-  
-    useEffect(() => {
-      axios.get("http://localhost:8080/orders",{withCredentials:true}).then((res) => {
-        // console.log(res);
+  const [allOrders, setOrders] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/orders", { withCredentials: true })
+      .then((res) => {
         setOrders(res.data);
       });
-    }, [allOrders]);
+  }, []);
+
+  
   return (
     <div className="orders">
       {/* <div className="no-orders">
@@ -36,10 +39,18 @@ const Orders = () => {
 
           <tbody>
             {allOrders.map((stock, index) => {
-              const currValue = stock.price * stock.qty;
-              const isProfit = currValue - stock.avg * stock.qty >= 0.0;
-              const profitClass = isProfit ? "profit" : "loss";
-              const dayClass = stock.isLoss ? "loss" : "profit";
+
+
+            const statusClass =
+                stock.status === "Pending"
+                  ? "pending"
+                  : stock.status === "Completed"
+                  ? "completed"
+                  : stock.status === "Rejected"
+                  ? "rejected"
+                  : "cancelled";
+
+            console.log(statusClass)
 
               return (
                 <tr key={index}>
@@ -48,8 +59,12 @@ const Orders = () => {
                   <td>{stock.qty}</td>
                   <td>{stock.price}</td>
                   <td>{stock.price * stock.qty}</td>
-                  <td style={{color:"green",fontSize:"0.8rem", fontWeight:"500"}}>Completed</td>
-                  <td style={{fontSize:"0.8rem"}}>{stock.createdAt.slice(0,10)}</td>
+                  <td className={statusClass} style={{ fontSize: "0.8rem" }}>
+                    {stock.status}
+                  </td>
+                  <td style={{ fontSize: "0.8rem" }}>
+                    {stock.createdAt.slice(0, 10)}
+                  </td>
                 </tr>
               );
             })}
@@ -75,9 +90,8 @@ const Orders = () => {
           <p>P&L</p>
         </div>
       </div>
-   </div>
+    </div>
   );
-
 };
 
 export default Orders;

@@ -1,20 +1,19 @@
-import React ,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 // import { positions } from "../data/data";
 import axios from "axios";
 
-
 const Positions = () => {
+  let [allPositions, setAllPositions] = useState([]);
 
-    let [allPositions, setAllPositions] = useState([]);
-
-    useEffect(() => {
-      axios.get("http://localhost:8080/positions")
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/positions", { withCredentials: true })
       .then((res) => {
-        // console.log(res.data);
+        // console.log(res);
         setAllPositions(res.data);
-      })
-    },[]);
+      });
+  }, [allPositions]); // fetch the latest record
 
   return (
     <>
@@ -36,29 +35,18 @@ const Positions = () => {
 
           <tbody>
             {allPositions.map((stock, index) => {
-              const currValue = stock.price * stock.qty;
-              const isProfit = currValue - stock.avg * stock.qty >= 0.0;
-              const profitClass = isProfit ? "profit" : "loss";
-              const dayClass = stock.isLoss ? "loss" : "profit";
-
+                const dayNetChange = stock.dayChange >= 0 ? "profit" : "loss";
+                const dayltp = stock.ltp >= 0 ? "profit" : "loss";
+                const daypnl = stock.pnl >= 0 ? "profit" : "loss";
               return (
-                //product: "CNC",
-                // name: "JUBLFOOD",
-                // qty: 1,
-                // avg: 3124.75,
-                // price: 3082.65,
-                // net: "+10.04%",
-                // day: "-1.35%",
-                // isLoss: true,
                 <tr key={index}>
                   <td>{stock.product}</td>
-                  <td>{stock.name}</td>
+                  <td>{stock.instrument}</td>
                   <td>{stock.qty}</td>
-                  <td>{stock.avg.toFixed(2)}</td>
-                  <td>{stock.price.toFixed(2)}</td>
-                  {/* change */}
-                  <td>{(currValue - stock.avg * stock.qty).toFixed(2)}</td>
-                  <td className={dayClass}>{stock.day}</td>
+                  <td>{stock.avgCost.toFixed(3)}</td>
+                  <td className={dayltp}>{stock.ltp.toFixed(3)}</td>
+                  <td className={daypnl}>{stock.pnl.toFixed(3)}</td>
+                  <td className={dayNetChange}>{stock.netChange.toFixed(3)}</td>
                 </tr>
               );
             })}

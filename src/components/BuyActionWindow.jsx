@@ -1,6 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
@@ -9,20 +13,28 @@ import "./BuyActionWindow.css";
 
 const BuyActionWindow = ({ uid }) => {
   const { closeBuyWindow } = useContext(GeneralContext);
+
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
-  console.log(uid);
+  const [product, setProduct] = useState("CNC");
+  // console.log(uid);
   const handleBuyClick = async () => {
-    console.log("Buy button clicked");
+
+    console.log(uid);
     const data = {
-      name: uid,
+      symbol: uid[0],
+      name: uid[1],
       qty: stockQuantity,
       price: stockPrice,
       mode: "BUY",
+      product: product,
     };
 
+    // console.log(product);
+
     try {
-      axios.post("http://localhost:8080/holdings/add", data, {
+      let destination = product === "MIS" ? "positions" : "holdings";
+      axios.post(`http://localhost:8080/${destination}/add`, data, {
         withCredentials: true,
       });
     } catch (err) {
@@ -35,13 +47,15 @@ const BuyActionWindow = ({ uid }) => {
     closeBuyWindow();
   };
 
+  const id = React.useId();
+
   return (
     <div className="container" id="buy-window" draggable="true">
       <h3
         className="text-muted text-center"
         style={{ color: "#b7b3b3", textAlign: "center" }}
       >
-        {uid}
+        {uid[0]}
       </h3>
       <div className="regular-order">
         <div className="inputs">
@@ -66,6 +80,22 @@ const BuyActionWindow = ({ uid }) => {
               value={stockPrice}
             />
           </fieldset>
+
+          <FormControl>
+            <FormLabel id={`${id}-label`}>
+              <b>Product</b>
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby={`${id}-label`}
+              name="radio-buttons-group"
+              value={product}
+              onChange={(e) => setProduct(e.target.value)}
+            >
+              <FormControlLabel value="CNC" control={<Radio />} label="CNC" />
+
+              <FormControlLabel value="MIS" control={<Radio />} label="MIS" />
+            </RadioGroup>
+          </FormControl>
         </div>
       </div>
 
