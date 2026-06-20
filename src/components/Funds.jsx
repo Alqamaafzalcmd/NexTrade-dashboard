@@ -1,10 +1,12 @@
-import React from "react";
+import React ,{useContext} from "react";
 import { Link } from "react-router-dom";
+import GeneralContext from "./GeneralContext"
+
 
 const Funds = () => {
-  const { openAddFundsWindow, openWithdrawFundsWindow } =
+  const { openAddFundsWindow, openWithdrawFundsWindow, fundDialog } =
     useContext(GeneralContext);
-    
+
   return (
     <>
       <div className="funds-page text-muted">
@@ -47,9 +49,11 @@ const Funds = () => {
               <p>Instant, zero-cost fund transfers with UPI</p>
 
               <div className="btn-group-custom">
-                <Link className="btn add-btn" onClick>Add Funds</Link>
+                <Link className="btn add-btn" onClick={openAddFundsWindow}>
+                  Add Funds
+                </Link>
 
-                <Link className="btn withdraw-btn">Withdraw</Link>
+                <Link className="btn withdraw-btn" onClick={openWithdrawFundsWindow}>Withdraw</Link>
               </div>
             </div>
           </div>
@@ -65,3 +69,8 @@ const Funds = () => {
 };
 
 export default Funds;
+
+
+
+
+

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
 import BuyActionWindow from "./BuyActionWindow";
+import AddFunds from "./AddFunds"
+import WithdrawFunds from "./WithdrawFunds"
 
 const GeneralContext = React.createContext({
   openBuyWindow: (uid) => {},
@@ -13,7 +15,7 @@ const GeneralContext = React.createContext({
 });
 
 export const GeneralContextProvider = (props) => {
-  
+
   // buy actions window
   const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
   const [selectedStockUID, setSelectedStockUID] = useState("");

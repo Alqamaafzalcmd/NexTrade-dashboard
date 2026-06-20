@@ -962,3 +962,16 @@ hr {
   background: #2f6eb8;
   color: white;
 }
+
+
+.add-funds{
+  position:absolute;
+  bottom:2%;
+  right:40%;
+
+
+}
+
+.add-funds:hover{
+  cursor:pointer;
+}
