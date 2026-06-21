@@ -1,12 +1,30 @@
-import React ,{useContext} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import GeneralContext from "./GeneralContext"
-
+import GeneralContext from "./GeneralContext";
+import axios from "axios";
 
 const Funds = () => {
   const { openAddFundsWindow, openWithdrawFundsWindow, fundDialog } =
     useContext(GeneralContext);
 
+  const [info, setInfo] = useState({});
+
+  useEffect(() => {
+    try {
+      let fetchdata = async () => {
+        let res = await axios.get("http://localhost:8080/users/info",{withCredentials:true});
+        console.log(res.data);
+        setInfo(res.data);
+      };
+
+      fetchdata();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [info]);
+  // availableCash = user.funds;
+  // usedMargin = user.usedMargin;
+  // totalPortfolio = user.funds + holdingsValue + positionsValue;
   return (
     <>
       <div className="funds-page text-muted">
@@ -17,27 +35,29 @@ const Funds = () => {
 
               <div className="fund-item">
                 <span>Available Cash</span>
-                <span>₹85,000</span>
+                <span>&#8377;{info.funds}</span>
               </div>
 
               <div className="fund-item">
                 <span>Holdings Value</span>
-                <span>₹35,000</span>
+                <span>&#8377;{info.holdingValue}</span>
               </div>
 
               <div className="fund-item">
                 <span>Used Margin</span>
-                <span>₹5,000</span>
+                <span>&#8377;{info.usedMargin}</span>
               </div>
 
               <div className="fund-item">
                 <span>Positions Value</span>
-                <span>₹15,000</span>
+                <span>&#8377;{info.positionValue}</span>
               </div>
 
               <div className="fund-item total">
                 <span>Total Portfolio</span>
-                <span>₹1,35,000</span>
+                <span>
+                  &#8377;{info.funds + info.positionValue + info.holdingValue}
+                </span>
               </div>
             </div>
           </div>
@@ -53,7 +73,12 @@ const Funds = () => {
                   Add Funds
                 </Link>
 
-                <Link className="btn withdraw-btn" onClick={openWithdrawFundsWindow}>Withdraw</Link>
+                <Link
+                  className="btn withdraw-btn"
+                  onClick={openWithdrawFundsWindow}
+                >
+                  Withdraw
+                </Link>
               </div>
             </div>
           </div>
@@ -69,8 +94,3 @@ const Funds = () => {
 };
 
 export default Funds;
-
-
-
-
-

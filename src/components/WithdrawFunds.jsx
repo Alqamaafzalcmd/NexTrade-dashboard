@@ -1,10 +1,52 @@
 import react, { useState, useContext } from "react";
 import GeneralContext from "./GeneralContext";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast, Bounce } from "react-toastify";
 
 const WithdrawFunds = () => {
   const [field, setField] = useState();
   const { closeFundsWindow } = useContext(GeneralContext);
+
+  let handleWithdrawFunds = async () => {
+    try {
+     let res =  await axios.post(
+        "http://localhost:8080/users/withdrawfunds",
+        { field: Number(field) },
+        { withCredentials: true },
+      );
+       
+     
+       toast.success(res.data.message, {
+         position: "top-center",
+         autoClose: 500,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+         transition: Bounce,
+       });
+    } catch (err) {
+       toast.error(err.response.data.message, {
+         position: "top-center",
+         autoClose: 500,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+         transition: Bounce,
+       });
+      // console.log(err.response?.data || err.message);
+    }
+
+     closeFundsWindow();
+  
+  }
+
   return (
     <div
       className="add-funds card shadow-sm p-4 mx-auto"
@@ -24,7 +66,7 @@ const WithdrawFunds = () => {
       />
 
       <div className="d-flex gap-2">
-        <button className="btn btn-blue">Withdraw Funds</button>
+        <button className="btn btn-blue" onClick={handleWithdrawFunds}>Withdraw Funds</button>
 
         <button className="btn btn-grey" onClick={closeFundsWindow}>
           Cancel
