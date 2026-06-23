@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
 import BuyActionWindow from "./BuyActionWindow";
-import AddFunds from "./AddFunds"
-import WithdrawFunds from "./WithdrawFunds"
+import AddFunds from "./AddFunds";
+import WithdrawFunds from "./WithdrawFunds";
+import SellActionWindow from "./SellActionWindow";
+
 
 const GeneralContext = React.createContext({
+  // buy -------
   openBuyWindow: (uid) => {},
-  closeBuyWindow: () => {},
+  openSellWindow: (uid) => {},
+  closeBuySellWindow:() => {},
 
   // funds ----------
   openAddFundsWindow: () => {},
@@ -16,20 +20,29 @@ const GeneralContext = React.createContext({
 
 export const GeneralContextProvider = (props) => {
 
-  // buy actions window
-  const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
   const [selectedStockUID, setSelectedStockUID] = useState("");
 
-    const handleOpenBuyWindow = (uid) => {
-      setIsBuyWindowOpen(true);
-      setSelectedStockUID(uid);
+  // buy / sell  action windows
+  const [isBuySell, setIsBuySell] = useState(null);
+ 
+  const handleOpenBuyWindow = (uid) => {
+    setIsBuySell("buy");
+    setSelectedStockUID(uid);
+  }
+  
+   const handleOpenSellWindow = (uid) => {
+     setIsBuySell("sell");
+     setSelectedStockUID(uid);
+   };
+
+    const handleCloseBuySellWindow = () => {
+         setIsBuySell(null);
+         setSelectedStockUID("");
     };
 
-    const handleCloseBuyWindow = () => {
-      setIsBuyWindowOpen(false);
-      setSelectedStockUID("");
-    };
 
+
+ 
 
   // funds add and withdraw
   const [fundDialog, setFundDialog] = useState(null);
@@ -51,15 +64,18 @@ export const GeneralContextProvider = (props) => {
     <GeneralContext.Provider
       value={{
         openBuyWindow: handleOpenBuyWindow,
-        closeBuyWindow: handleCloseBuyWindow,
+        openSellWindow: handleOpenSellWindow,
+        closeBuySellWindow: handleCloseBuySellWindow,
 
         openAddFundsWindow,
         openWithdrawFundsWindow,
         closeFundsWindow,
+
       }}
     >
       {props.children}
-      {isBuyWindowOpen && <BuyActionWindow uid={selectedStockUID} />}
+      {isBuySell == "buy" && <BuyActionWindow uid={selectedStockUID} />}
+      {isBuySell == "sell" && <SellActionWindow uid={selectedStockUID} />}
       {fundDialog === "add" && <AddFunds />}
       {fundDialog === "withdraw" && <WithdrawFunds />}
     </GeneralContext.Provider>

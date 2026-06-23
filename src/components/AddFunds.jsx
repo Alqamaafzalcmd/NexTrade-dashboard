@@ -3,6 +3,18 @@ import GeneralContext from "./GeneralContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
+const toastConfig = {
+  position: "top-center",
+  autoClose: 500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+  transition: Bounce,
+};
+
 
 const AddFunds = () => {
   const [field, setField] = useState(0);
@@ -19,30 +31,10 @@ const AddFunds = () => {
       );
 
       
-      toast.success("funds added successfully", {
-        position: "top-center",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.success("funds added successfully", toastConfig);
     } catch (err) {
       // console.log(err.response.data.message);
-      toast.error(err.response.data.message, {
-        position: "top-center",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.error(err.response.data.message, toastConfig);
 
       console.log(err.response?.data || err.message);
     }

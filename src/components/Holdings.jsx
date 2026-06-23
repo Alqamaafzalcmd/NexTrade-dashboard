@@ -11,7 +11,7 @@ const Holdings = () => {
       // console.log(res);
       setAllHoldings(res.data);
     });
-  }, [allHoldings]); // fetch the latest record
+  }, []); // fetch once on mount
 
   return (
     <>

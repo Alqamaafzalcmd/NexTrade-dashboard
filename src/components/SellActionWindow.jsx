@@ -1,70 +1,36 @@
-import React, { useState, useContext } from "react";
+import react, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+
 import axios from "axios";
 import GeneralContext from "./GeneralContext";
 
-import { toast, Bounce } from "react-toastify";
-const toastConfig = {
-  position: "top-center",
-  autoClose: 500,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "light",
-  transition: Bounce,
-};
+function SellActionWindow({uid}) {
+     const { openSellWindow, closeBuySellWindow } = useContext(GeneralContext);
 
-import "./BuyActionWindow.css";
+     const [stockQuantity, setStockQuantity] = useState(1);
+     const [stockPrice, setStockPrice] = useState(0.0);
+     const [product, setProduct] = useState("CNC");
 
-const BuyActionWindow = ({ uid }) => {
-  const { closeBuySellWindow } = useContext(GeneralContext);
+     const handleBuyClick = () => {
+       console.log(`selling the stock from ${product} .....`);
+       closeBuySellWindow();
+     };
 
-  const [stockQuantity, setStockQuantity] = useState(1);
-  const [stockPrice, setStockPrice] = useState(0.0);
-  const [product, setProduct] = useState("CNC");
-  // console.log(uid);
-  const handleBuyClick = async () => {
-    console.log(uid);
-    const data = {
-      symbol: uid[0],
-      name: uid[1],
-      qty: stockQuantity,
-      price: stockPrice,
-      mode: "BUY",
-      product: product,
-    };
+     const handleCancellClick = () => {
+        closeBuySellWindow();
+     };
 
-    // console.log(product);
-
-    try {
-      let destination = product === "MIS" ? "positions" : "holdings";
-      let res = await axios.post(`http://localhost:8080/${destination}/add`, data, {
-        withCredentials: true,
-      });
-      toast.success(res.data.message, toastConfig);
-    } catch (err) {
-      console.log(err.response.data.message);
-      toast.error(err.response.data.message, toastConfig);
-    }
-     closeBuySellWindow();
-  };
-
-  const handleCancelClick = () => {
-    closeBuySellWindow();
-  };
-
-  const id = React.useId();
 
   return (
-
-    <div className="card buy-window shadow-sm p-4 mx-auto" style={{ maxWidth: "400px" , backgroundColor:"#fcf5f5"}}>
+    <div
+      className="card buy-window shadow-sm p-4 mx-auto"
+      style={{ maxWidth: "400px", backgroundColor:"#fafdf9" }}
+    >
       <h5 className="mb-3 text-center">{uid[0]}</h5>
 
       <input
@@ -108,18 +74,19 @@ const BuyActionWindow = ({ uid }) => {
 
       <div className="d-flex gap-2">
         <button className="btn btn-blue flex-grow-1" onClick={handleBuyClick}>
-          Buy
+          Sell
         </button>
 
         <button
           className="btn btn-grey flex-grow-1"
-          onClick={handleCancelClick}
+          onClick={handleCancellClick}
         >
           Cancel
         </button>
       </div>
     </div>
   );
-};
+}
 
-export default BuyActionWindow;
+
+export default SellActionWindow;

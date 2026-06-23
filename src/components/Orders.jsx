@@ -11,7 +11,7 @@ const Orders = () => {
       .then((res) => {
         setOrders(res.data);
       });
-  }, []);
+  }, [allOrders]);
 
   
   return (

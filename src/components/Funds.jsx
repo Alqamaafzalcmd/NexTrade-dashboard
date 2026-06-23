@@ -7,13 +7,20 @@ const Funds = () => {
   const { openAddFundsWindow, openWithdrawFundsWindow, fundDialog } =
     useContext(GeneralContext);
 
-  const [info, setInfo] = useState({});
+  const [info, setInfo] = useState({
+    funds: 0,
+    holdingValue: 0,
+    usedMargin: 0,
+    positionValue: 0,
+  });
 
   useEffect(() => {
     try {
       let fetchdata = async () => {
-        let res = await axios.get("http://localhost:8080/users/info",{withCredentials:true});
-        console.log(res.data);
+        let res = await axios.get("http://localhost:8080/users/info", {
+          withCredentials: true,
+        });
+        // console.log(res.data);
         setInfo(res.data);
       };
 
@@ -22,9 +29,11 @@ const Funds = () => {
       console.log(err);
     }
   }, [info]);
+
   // availableCash = user.funds;
   // usedMargin = user.usedMargin;
   // totalPortfolio = user.funds + holdingsValue + positionsValue;
+
   return (
     <>
       <div className="funds-page text-muted">
@@ -35,28 +44,33 @@ const Funds = () => {
 
               <div className="fund-item">
                 <span>Available Cash</span>
-                <span>&#8377;{info.funds}</span>
+                <span>&#8377;{info.funds.toFixed(3)}</span>
               </div>
 
               <div className="fund-item">
                 <span>Holdings Value</span>
-                <span>&#8377;{info.holdingValue}</span>
+                <span>&#8377;{info.holdingValue.toFixed(3)}</span>
               </div>
 
               <div className="fund-item">
                 <span>Used Margin</span>
-                <span>&#8377;{info.usedMargin}</span>
+                <span>&#8377;{info.usedMargin.toFixed(3)}</span>
               </div>
 
               <div className="fund-item">
                 <span>Positions Value</span>
-                <span>&#8377;{info.positionValue}</span>
+                <span>&#8377;{info.positionValue.toFixed(3)}</span>
               </div>
 
               <div className="fund-item total">
                 <span>Total Portfolio</span>
                 <span>
-                  &#8377;{info.funds + info.positionValue + info.holdingValue}
+                  &#8377;
+                  {(
+                    Number(info.funds) +
+                    Number(info.positionValue) +
+                    Number(info.holdingValue)
+                  ).toFixed(3)}
                 </span>
               </div>
             </div>

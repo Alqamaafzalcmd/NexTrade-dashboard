@@ -5,8 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background-color: black;
-  color:white; */
+  background: linear-gradient(
+    180deg,
+    #fafafa 0%,
+    #fafafb 100%
+);
 }
 
 code {
@@ -972,6 +975,14 @@ hr {
 
 }
 
-.add-funds:hover{
+.add-funds, .buy-window:hover{
   cursor:pointer;
 }
+
+
+.buy-window{
+  position:absolute;
+  bottom:10%;
+  left:35%;
+}
+

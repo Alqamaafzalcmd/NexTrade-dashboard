@@ -13,6 +13,7 @@ import {
 } from "@mui/icons-material";
 import GeneralContext from "./GeneralContext";
 import BuyActionWindow from "./BuyActionWindow";
+import SellActionWindow from "./SellActionWindow";
 
 import axios from "axios";
 
@@ -20,7 +21,8 @@ import axios from "axios";
 const WatchList = () => {
   const [watchlist, setWatchlist] = useState([]);
 
-  const { isBuyWindowOpen, selectedStockUID } = useContext(GeneralContext);
+  const { isBuySell, selectedStockUID } =
+    useContext(GeneralContext);
 
   useEffect(() => {
 
@@ -65,7 +67,8 @@ const WatchList = () => {
           );
         })}
       </ul>
-      {isBuyWindowOpen && <BuyActionWindow uid={selectedStockUID} />}
+      {isBuySell == "buy" && <BuyActionWindow uid={selectedStockUID} />}
+      {isBuySell == "sell" && <SellActionWindow uid={selectedStockUID} />}
     </div>
   );
 };
@@ -114,7 +117,7 @@ const WatchListItem = ({ stock, index }) => {
 };
 
 const WatchListActions = ({ uid }) => {
-  const { openBuyWindow } = useContext(GeneralContext);
+  const { openBuyWindow , openSellWindow} = useContext(GeneralContext);
 
   return (
     <span className="actions">
@@ -135,7 +138,7 @@ const WatchListActions = ({ uid }) => {
           arrow
           transitioncomponent={Grow}
         >
-          <button className="sell">Sell</button>
+          <button className="sell" onClick={() => openSellWindow(uid)}>Sell</button>
         </Tooltip>
         <Tooltip
           title="Analytics (A)"
