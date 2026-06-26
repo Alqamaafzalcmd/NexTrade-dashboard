@@ -1,31 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
-import Flash from "../Flash";
 
 const Home = () => {
-  // const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     try {
-  //       await axios.get("http://localhost:8080/auth/verify", {
-  //         withCredentials: true,
-  //       });
-  //     } catch (error) {
-  //       window.location.href = "http://localhost:5173/login";
-  //     }
-  //   };
+  const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
 
-  //   checkAuth();
-  // }, [navigate]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/auth", {
+        withCredentials: true,
+      })
+      .then(() => {
+        setAuthenticated(true);
+      })
+      .catch(() => {
+        setAuthenticated(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <Loader/>;
+  }
+
+  if (!authenticated) {
+    window.location.href = "http://localhost:5173/login";
+    return null;
+  }
 
   return (
     <>
-      <Flash />
       <TopBar />
       <Dashboard />
     </>

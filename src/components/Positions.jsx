@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 
 // import { positions } from "../data/data";
 import axios from "axios";
+import api from "./Checker";
+
 
 const Positions = () => {
   let [allPositions, setAllPositions] = useState([]);
 
   useEffect(() => {
-    axios
+    api
       .get("http://localhost:8080/positions", { withCredentials: true })
       .then((res) => {
         // console.log(res);

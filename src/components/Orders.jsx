@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import api from "./Checker";
+
 
 const Orders = () => {
   const [allOrders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios
+    api
       .get("http://localhost:8080/orders", { withCredentials: true })
       .then((res) => {
         setOrders(res.data);
@@ -50,7 +52,6 @@ const Orders = () => {
                   ? "rejected"
                   : "cancelled";
 
-            console.log(statusClass)
 
               return (
                 <tr key={index}>

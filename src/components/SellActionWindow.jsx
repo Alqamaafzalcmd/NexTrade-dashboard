@@ -9,27 +9,60 @@ import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 import GeneralContext from "./GeneralContext";
 
-function SellActionWindow({uid}) {
-     const { openSellWindow, closeBuySellWindow } = useContext(GeneralContext);
+import { toast, Bounce } from "react-toastify";
+const toastConfig = {
+  position: "top-center",
+  autoClose: 500,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "light",
+  transition: Bounce,
+};
 
-     const [stockQuantity, setStockQuantity] = useState(1);
-     const [stockPrice, setStockPrice] = useState(0.0);
-     const [product, setProduct] = useState("CNC");
+function SellActionWindow({ uid }) {
+  const { openSellWindow, closeBuySellWindow } = useContext(GeneralContext);
 
-     const handleBuyClick = () => {
-       console.log(`selling the stock from ${product} .....`);
-       closeBuySellWindow();
-     };
+  const [stockQuantity, setStockQuantity] = useState(1);
+  const [stockPrice, setStockPrice] = useState(0.0);
+  const [product, setProduct] = useState("CNC");
 
-     const handleCancellClick = () => {
-        closeBuySellWindow();
-     };
+  const data = {
+    symbol: uid[0],
+    name: uid[1],
+    price: stockPrice,
+    qty: stockQuantity,
+    product: product,
+    mode:"SELL"
+  };
 
+  const handleBuyClick = async () => {
+    let destination = product === "CNC" ? "holdings" : "positions";
+    try {
+      let res = await axios.post(
+        `http://localhost:8080/${destination}/sell`,
+        data,
+        { withCredentials: true },
+      );
+      // console.log("Stock sold successfull");
+      toast.success(res.data.message, toastConfig);
+      closeBuySellWindow();
+    } catch (err) {
+      toast.error(err.response.data.message, toastConfig);
+      closeBuySellWindow();
+    }
+  };
+
+  const handleCancellClick = () => {
+    closeBuySellWindow();
+  };
 
   return (
     <div
       className="card buy-window shadow-sm p-4 mx-auto"
-      style={{ maxWidth: "400px", backgroundColor:"#fafdf9" }}
+      style={{ maxWidth: "400px", backgroundColor: "#fafdf9" }}
     >
       <h5 className="mb-3 text-center">{uid[0]}</h5>
 
@@ -87,6 +120,5 @@ function SellActionWindow({uid}) {
     </div>
   );
 }
-
 
 export default SellActionWindow;

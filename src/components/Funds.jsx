@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GeneralContext from "./GeneralContext";
 import axios from "axios";
+import api from "./Checker";
 
 const Funds = () => {
   const { openAddFundsWindow, openWithdrawFundsWindow, fundDialog } =
@@ -17,7 +18,7 @@ const Funds = () => {
   useEffect(() => {
     try {
       let fetchdata = async () => {
-        let res = await axios.get("http://localhost:8080/users/info", {
+        let res = await api.get("http://localhost:8080/users/info", {
           withCredentials: true,
         });
         // console.log(res.data);
