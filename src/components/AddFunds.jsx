@@ -1,6 +1,5 @@
-import react, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import GeneralContext from "./GeneralContext";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
 const toastConfig = {
@@ -21,8 +20,6 @@ const AddFunds = () => {
   const { closeFundsWindow } = useContext(GeneralContext);
 
   const handleAddFunds = async () => {
-    console.log("handling funds ......");
-
     try {
       await axios.post(
         "http://localhost:8080/users/addfunds",
@@ -33,10 +30,7 @@ const AddFunds = () => {
       
       toast.success("funds added successfully", toastConfig);
     } catch (err) {
-      // console.log(err.response.data.message);
       toast.error(err.response.data.message, toastConfig);
-
-      console.log(err.response?.data || err.message);
     }
     closeFundsWindow();
   };

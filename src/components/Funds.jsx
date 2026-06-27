@@ -1,11 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GeneralContext from "./GeneralContext";
-import axios from "axios";
 import api from "./Checker";
 
 const Funds = () => {
-  const { openAddFundsWindow, openWithdrawFundsWindow, fundDialog } =
+  const { openAddFundsWindow, openWithdrawFundsWindow } =
     useContext(GeneralContext);
 
   const [info, setInfo] = useState({
@@ -21,19 +20,12 @@ const Funds = () => {
         let res = await api.get("http://localhost:8080/users/info", {
           withCredentials: true,
         });
-        // console.log(res.data);
         setInfo(res.data);
       };
 
       fetchdata();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }, [info]);
-
-  // availableCash = user.funds;
-  // usedMargin = user.usedMargin;
-  // totalPortfolio = user.funds + holdingsValue + positionsValue;
 
   return (
     <>

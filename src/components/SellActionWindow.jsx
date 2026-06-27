@@ -1,5 +1,4 @@
-import react, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -23,7 +22,7 @@ const toastConfig = {
 };
 
 function SellActionWindow({ uid }) {
-  const { openSellWindow, closeBuySellWindow } = useContext(GeneralContext);
+  const { closeBuySellWindow } = useContext(GeneralContext);
 
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
@@ -46,7 +45,6 @@ function SellActionWindow({ uid }) {
         data,
         { withCredentials: true },
       );
-      // console.log("Stock sold successfull");
       toast.success(res.data.message, toastConfig);
       closeBuySellWindow();
     } catch (err) {

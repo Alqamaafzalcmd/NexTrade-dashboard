@@ -20,8 +20,6 @@ const Menu = () => {
         let res = await api.get("/users/info", {
           withCredentials: true,
         });
-
-        // console.log(res);
         setInfo({
           username: res.data.username,
           useremail: res.data.useremail,
@@ -29,9 +27,7 @@ const Menu = () => {
       };
 
       fetchdata();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }, []);
 
   const handleMenuClick = (index) => {

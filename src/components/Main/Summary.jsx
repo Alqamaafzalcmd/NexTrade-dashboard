@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import api from "../Checker";
 
 const Summary = () => {
@@ -21,14 +20,11 @@ const Summary = () => {
           withCredentials: true,
         });
 
-        // console.log(res);
         setInfo(res.data);
       };
 
       fetchdata();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   },[]);
 
   return (

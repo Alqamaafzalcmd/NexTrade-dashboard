@@ -16,9 +16,6 @@ const toastConfig = {
 };
 
 function Profile() {
-
-  
-
    let [info, setInfo] = useState({
      username:"xyz",
      useremail:"xyz@gmail.com"
@@ -30,8 +27,6 @@ function Profile() {
          let res = await api.get("/users/info", {
            withCredentials: true,
          });
-
-        //  console.log(res);
          setInfo({
           username:res.data.username,
           useremail:res.data.useremail
@@ -39,18 +34,13 @@ function Profile() {
        };
 
        fetchdata();
-     } catch (err) {
-       console.log(err);
-     }
+     } catch (err) {}
    }, []);
 
-
-
   let handleLogoutClick = () => {
-    console.log("loggin out from dashboard ....")
     axios
       .get("http://localhost:8080/auth/logout",{withCredentials:true})
-      .then((res) => {
+      .then(() => {
      
          Swal.fire({
            title: "Your Session Expired",
@@ -62,9 +52,6 @@ function Profile() {
            allowOutsideClick: false,
            allowEscapeKey: false,
            allowEnterKey: false,
-        //    didOpen: () => {
-        //      Swal.showLoading();
-        //    },
          }).then(
            setTimeout(() => {
              window.location.href = "http://localhost:5173/login";

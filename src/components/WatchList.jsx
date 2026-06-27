@@ -1,7 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-// import { watchlist } from "../data/data";
-// import { stockData } from "../data/stockData";
-
 import { Tooltip } from "@mui/material";
 import Grow from "@mui/material/Grow";
 
@@ -16,31 +13,52 @@ import BuyActionWindow from "./BuyActionWindow";
 import SellActionWindow from "./SellActionWindow";
 
 import axios from "axios";
-
+import DoughnutChart from "./DoughnutChart";
 
 const WatchList = () => {
   const [watchlist, setWatchlist] = useState([]);
 
-  const { isBuySell, selectedStockUID } =
-    useContext(GeneralContext);
+  const { isBuySell, selectedStockUID } = useContext(GeneralContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("http://localhost:8080/watchlist");
-      if(res){
-         setWatchlist(res.data);
-         console.log(res.data);
+      if (res) {
+        setWatchlist(res.data);
       }
     };
 
     fetchData();
-
     const interval = setInterval(fetchData, 50000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // console.log(watchlist);
+  const data = {
+    labels: watchlist.map((stock) => stock.name),
+    datasets: [
+      {
+        label: "Price of Stock",
+        data: watchlist.map((stock) => stock.currentPrice),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(153, 102, 255, 0.6)",
+          "rgba(255, 159, 64, 0.6)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 2,
+      },
+    ],
+  };
 
   return (
     <div className="watchlist-container">
@@ -68,6 +86,8 @@ const WatchList = () => {
       </ul>
       {isBuySell == "buy" && <BuyActionWindow uid={selectedStockUID} />}
       {isBuySell == "sell" && <SellActionWindow uid={selectedStockUID} />}
+
+      <DoughnutChart data={data} />
     </div>
   );
 };
@@ -84,7 +104,6 @@ const WatchListItem = ({ stock, index }) => {
   const handleMouseLeave = (e) => {
     setWatchListActions(false);
   };
-
 
   return (
     <li
@@ -118,7 +137,7 @@ const WatchListItem = ({ stock, index }) => {
 };
 
 const WatchListActions = ({ uid }) => {
-  const { openBuyWindow , openSellWindow} = useContext(GeneralContext);
+  const { openBuyWindow, openSellWindow } = useContext(GeneralContext);
 
   return (
     <span className="actions">
@@ -139,7 +158,9 @@ const WatchListActions = ({ uid }) => {
           arrow
           transitioncomponent={Grow}
         >
-          <button className="sell" onClick={() => openSellWindow(uid)}>Sell</button>
+          <button className="sell" onClick={() => openSellWindow(uid)}>
+            Sell
+          </button>
         </Tooltip>
         <Tooltip
           title="Analytics (A)"

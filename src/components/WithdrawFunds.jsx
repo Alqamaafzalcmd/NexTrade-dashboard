@@ -1,6 +1,5 @@
-import react, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import GeneralContext from "./GeneralContext";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
 
@@ -23,22 +22,19 @@ const WithdrawFunds = () => {
 
   let handleWithdrawFunds = async () => {
     try {
-     let res = await axios.post(
+      let res = await axios.post(
         "http://localhost:8080/users/withdrawfunds",
         { field: Number(field) },
         { withCredentials: true },
       );
-       
-     
-       toast.success(res.data.message, toastConfig);
+
+      toast.success(res.data.message, toastConfig);
     } catch (err) {
-       toast.error(err.response.data.message, toastConfig);
-      // console.log(err.response?.data || err.message);
+      toast.error(err.response.data.message, toastConfig);
     }
 
-     closeFundsWindow();
-  
-  }
+    closeFundsWindow();
+  };
 
   return (
     <div
@@ -59,7 +55,9 @@ const WithdrawFunds = () => {
       />
 
       <div className="d-flex gap-2">
-        <button className="btn btn-blue" onClick={handleWithdrawFunds}>Withdraw Funds</button>
+        <button className="btn btn-blue" onClick={handleWithdrawFunds}>
+          Withdraw Funds
+        </button>
 
         <button className="btn btn-grey" onClick={closeFundsWindow}>
           Cancel

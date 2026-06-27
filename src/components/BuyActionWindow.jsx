@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -29,9 +28,8 @@ const BuyActionWindow = ({ uid }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(0.0);
   const [product, setProduct] = useState("CNC");
-  // console.log(uid);
+
   const handleBuyClick = async () => {
-    console.log(uid);
     const data = {
       symbol: uid[0],
       name: uid[1],
@@ -41,8 +39,6 @@ const BuyActionWindow = ({ uid }) => {
       product: product,
     };
 
-    // console.log(product);
-
     try {
       let destination = product === "MIS" ? "positions" : "holdings";
       let res = await axios.post(`http://localhost:8080/${destination}/add`, data, {
@@ -50,20 +46,16 @@ const BuyActionWindow = ({ uid }) => {
       });
       toast.success(res.data.message, toastConfig);
     } catch (err) {
-      console.log(err.response.data.message);
       toast.error(err.response.data.message, toastConfig);
     }
-     closeBuySellWindow();
+    closeBuySellWindow();
   };
 
   const handleCancelClick = () => {
     closeBuySellWindow();
   };
 
-  const id = React.useId();
-
   return (
-
     <div className="card buy-window shadow-sm p-4 mx-auto" style={{ maxWidth: "400px" , backgroundColor:"#fcf5f5"}}>
       <h5 className="mb-3 text-center">{uid[0]}</h5>
 

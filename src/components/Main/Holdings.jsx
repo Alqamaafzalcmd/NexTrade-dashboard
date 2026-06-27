@@ -1,18 +1,47 @@
 import React, { useState, useEffect } from "react";
 import api from "../Checker";
-
-// import {holdings} from "../data/data";
-import axios from "axios";
+import VerticalChart from "../VerticalChart";
 
 const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState([]);
 
   useEffect(() => {
-    api.get("http://localhost:8080/holdings",{withCredentials:true}).then((res) => {
-      // console.log(res);
-      setAllHoldings(res.data);
-    });
+    api
+      .get("http://localhost:8080/holdings", { withCredentials: true })
+      .then((res) => {
+        setAllHoldings(res.data);
+      });
   }, []); // fetch once on mount
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Holdings",
+      },
+    },
+  };
+  const labels = allHoldings.map((h) => h["instrument"]);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Stock Avg Price",
+        data: allHoldings.map((h) => h.avgCost),
+        backgroundColor: "rgba(34, 167, 249, 0.5)",
+      },
+      {
+        label: "Stock Current Price",
+        data: allHoldings.map((stock) => stock.currentValue),
+        backgroundColor: "rgba(250, 5, 58, 0.5)",
+      },
+    ],
+  };
 
   return (
     <>
@@ -36,11 +65,9 @@ const Holdings = () => {
 
           <tbody>
             {allHoldings.map((stock, index) => {
-
               const pnlClass = stock.pnl >= 0 ? "profit" : "loss";
-                const netClass = stock.netChange >= 0 ? "profit" : "loss";
-                  const dayClass = stock.dayChange >= 0 ? "profit" : "loss";
-             
+              const netClass = stock.netChange >= 0 ? "profit" : "loss";
+              const dayClass = stock.dayChange >= 0 ? "profit" : "loss";
 
               return (
                 <tr key={index}>
@@ -77,6 +104,7 @@ const Holdings = () => {
           <p>P&L</p>
         </div>
       </div>
+      <VerticalChart options={options} data={data} />
     </>
   );
 };

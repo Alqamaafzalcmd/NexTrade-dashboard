@@ -5,13 +5,11 @@ function Flash() {
   let [flash, setFlash] = useState(null);
 
   useEffect(() => {
-    // console.log("Refreshing the state ....");
     const getMessage = async () => {
       const res = await axios.get("http://localhost:8080/flash-message", {
         withCredentials: true,
       });
 
-      //  console.log(res);
       if (res.data.success) {
         setFlash({
           message: res.data.success,
@@ -24,17 +22,12 @@ function Flash() {
           type: "error",
         });
       }
-
-      // console.log(res);
     };
 
     getMessage();
   }, []);
 
   if (!flash) return null;
-
-//   console.log(flash.message);
-//   console.log(flash.type);
 
   const alertClassName =
     flash.type === "success"
