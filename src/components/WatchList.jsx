@@ -25,7 +25,6 @@ const WatchList = () => {
     useContext(GeneralContext);
 
   useEffect(() => {
-
     const fetchData = async () => {
       const res = await axios.get("http://localhost:8080/watchlist");
       if(res){
@@ -96,21 +95,23 @@ const WatchListItem = ({ stock, index }) => {
       <div className="item">
         <p className={stock.change < 0 ? "down" : "up"}>{stock.name}</p>
         <div className="itemInfo">
-          <span className="percent">{stock.change}</span>
+          <span className={stock.changePercent < 0 ? "down" : "up"}>
+            {stock.change} &nbsp;({stock.changePercent > 0 ? "+" : ""}
+            {Number(stock.changePercent).toFixed(2)}%) &nbsp;
+          </span>
           {stock.change < 0 ? (
             <KeyboardArrowDown className="down" />
           ) : (
             <KeyboardArrowUp className="up" />
           )}
           <span className={stock.change < 0 ? "down" : "up"}>
+            &nbsp;
             {stock.currentPrice}
           </span>
         </div>
       </div>
       {showWatchlistActions && (
-        <WatchListActions
-          uid={[stock.symbol, stock.name]}
-        ></WatchListActions>
+        <WatchListActions uid={[stock.symbol, stock.name]}></WatchListActions>
       )}
     </li>
   );

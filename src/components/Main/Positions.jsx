@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 // import { positions } from "../data/data";
 import axios from "axios";
-import api from "./Checker";
+import api from "../Checker";
 
 
 const Positions = () => {

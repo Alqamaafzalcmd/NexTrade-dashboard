@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "./Checker";
+import api from "../Checker";
 
 // import {holdings} from "../data/data";
 import axios from "axios";

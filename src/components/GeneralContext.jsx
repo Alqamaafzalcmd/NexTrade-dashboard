@@ -16,6 +16,11 @@ const GeneralContext = React.createContext({
   openAddFundsWindow: () => {},
   openWithdrawFundsWindow: () => {},
   closeFundsWindow: () => {},
+
+  // profile ----------
+  isProfileOpen: false,
+  toggleProfile: () => {},
+  closeProfile: () => {},
 });
 
 export const GeneralContextProvider = (props) => {
@@ -57,6 +62,16 @@ export const GeneralContextProvider = (props) => {
     setFundDialog(null);
   };
 
+  // profile
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const toggleProfile = () => {
+    setIsProfileOpen((prevState) => !prevState);
+  };
+
+  const closeProfile = () => {
+    setIsProfileOpen(false);
+  };
 
   const handleSetFunds = () => {};
 
@@ -70,7 +85,9 @@ export const GeneralContextProvider = (props) => {
         openAddFundsWindow,
         openWithdrawFundsWindow,
         closeFundsWindow,
-
+        isProfileOpen,
+        toggleProfile,
+        closeProfile,
       }}
     >
       {props.children}

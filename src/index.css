@@ -257,7 +257,7 @@ code {
 .menu-container {
   flex-basis: 68%;
   height: 100%;
-  padding: 10px 20px;
+  padding: 5px 20px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -277,6 +277,7 @@ code {
 
 .menus ul {
   list-style-type: none;
+  margin-bottom: 0px;
 }
 
 .menus li {
@@ -285,6 +286,9 @@ code {
   text-decoration: none;
 }
 
+.menus li p{
+     margin-bottom: 0px ;
+}
 .menu {
   font-size: 0.8rem;
   font-weight: 400;
@@ -325,6 +329,7 @@ hr {
 }
 
 .profile .username {
+  margin-bottom: 5px;
   font-size: 0.8rem;
   font-weight: 300;
 }
@@ -584,7 +589,9 @@ hr {
 .indices-container {
   flex-basis: 32%;
   height: 100%;
-  padding: 10px 20px;
+  margin-top:10px;
+  padding:5px 20px 5px 20px;
+
   border-right: 1px solid rgb(224, 224, 224);
   box-sizing: border-box;
   display: flex;
@@ -986,3 +993,35 @@ hr {
   left:35%;
 }
 
+
+
+
+/* Profile list style ----------- */
+.profile-list li{
+  padding-left: 10px;
+  margin-bottom: 10px;
+  margin-top:10px;
+  display: block;
+}
+
+.profile-list div:hover{
+  cursor: pointer;
+  font-weight:500;
+}
+
+.profile-list{
+  font-size:0.9rem;
+}
+
+.profile-list li i {
+  margin-right: 10px;
+  margin-top:3px;
+}
+
+
+.profile-comps{
+  position: absolute;
+  right:0%;
+  top:10%;
+  z-index: 100;
+}

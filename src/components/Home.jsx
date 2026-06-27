@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
 import Dashboard from "./Dashboard";
+import { GeneralContextProvider } from "./GeneralContext";
 import TopBar from "./TopBar";
 
 const Home = () => {
@@ -37,10 +38,10 @@ const Home = () => {
   }
 
   return (
-    <>
+    <GeneralContextProvider>
       <TopBar />
       <Dashboard />
-    </>
+    </GeneralContextProvider>
   );
 };
 

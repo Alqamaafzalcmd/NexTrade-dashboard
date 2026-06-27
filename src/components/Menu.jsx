@@ -1,18 +1,45 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import GeneralContext from "./GeneralContext";
+import Profile from "./Main/Profile";
+import api from "./Checker";
 
 const Menu = () => {
   const [selectMenu, setSelectMenu] = useState(0);
-  const [isProfle, setIsprofile] = useState(false);
+  const { isProfileOpen, toggleProfile } = useContext(GeneralContext);
+
+  let [info, setInfo] = useState({
+    username: "xyz",
+    useremail: "xyz@gmail.com",
+  });
+
+
+  useEffect(() => {
+    try {
+      let fetchdata = async () => {
+        let res = await api.get("/users/info", {
+          withCredentials: true,
+        });
+
+        // console.log(res);
+        setInfo({
+          username: res.data.username,
+          useremail: res.data.useremail,
+        });
+      };
+
+      fetchdata();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   const handleMenuClick = (index) => {
     setSelectMenu(index);
   };
 
   const handleProfileClick = () => {
-    // console.log("Profile clicked");
-    setIsprofile(!isProfle);
+    toggleProfile();
   };
 
   // css class in index.css
@@ -94,11 +121,15 @@ const Menu = () => {
 
         <hr />
         <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
+          <div className="avatar">{info.username.slice(0,2).toUpperCase()}</div>
+          <p className="username">{info.username}</p>
         </div>
-        {/* {isProfile} */}
-         </div>
+        {isProfileOpen && (
+          <div className="profile-comps">
+            <Profile />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
