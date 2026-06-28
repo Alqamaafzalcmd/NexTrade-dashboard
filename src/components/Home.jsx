@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/auth", {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/auth`, {
         withCredentials: true,
       })
       .then(() => {
@@ -33,7 +33,7 @@ const Home = () => {
   }
 
   if (!authenticated) {
-    window.location.href = "http://localhost:5173/login";
+    window.location.href = import.meta.env.VITE_FRONTEND_URL;
     return null;
   }
 

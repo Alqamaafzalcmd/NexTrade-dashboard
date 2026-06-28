@@ -17,7 +17,7 @@ const Funds = () => {
   useEffect(() => {
     try {
       let fetchdata = async () => {
-        let res = await api.get("http://localhost:8080/users/info", {
+        let res = await api.get("/users/info", {
           withCredentials: true,
         });
         setInfo(res.data);

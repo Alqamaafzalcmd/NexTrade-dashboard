@@ -14,6 +14,8 @@ const toastConfig = {
   transition: Bounce,
 };
 
+import api from "./Checker";
+
 
 const AddFunds = () => {
   const [field, setField] = useState(0);
@@ -21,8 +23,8 @@ const AddFunds = () => {
 
   const handleAddFunds = async () => {
     try {
-      await axios.post(
-        "http://localhost:8080/users/addfunds",
+      await api.post(
+        "/users/addfunds",
         { field: Number(field) },
         { withCredentials: true },
       );

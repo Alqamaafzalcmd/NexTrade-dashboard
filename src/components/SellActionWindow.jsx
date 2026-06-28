@@ -41,7 +41,7 @@ function SellActionWindow({ uid }) {
     let destination = product === "CNC" ? "holdings" : "positions";
     try {
       let res = await axios.post(
-        `http://localhost:8080/${destination}/sell`,
+        `${import.meta.env.VITE_BACKEND_URL}/${destination}/sell`,
         data,
         { withCredentials: true },
       );

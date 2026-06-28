@@ -7,7 +7,7 @@ const Holdings = () => {
 
   useEffect(() => {
     api
-      .get("http://localhost:8080/holdings", { withCredentials: true })
+      .get("/holdings", { withCredentials: true })
       .then((res) => {
         setAllHoldings(res.data);
       });

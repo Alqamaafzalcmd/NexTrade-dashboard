@@ -39,7 +39,7 @@ function Profile() {
 
   let handleLogoutClick = () => {
     axios
-      .get("http://localhost:8080/auth/logout",{withCredentials:true})
+      .get("/auth/logout",{withCredentials:true})
       .then(() => {
      
          Swal.fire({
@@ -54,7 +54,7 @@ function Profile() {
            allowEnterKey: false,
          }).then(
            setTimeout(() => {
-             window.location.href = "http://localhost:5173/login";
+             window.location.href = import.meta.env.VITE_FRONTEND_URL;
            }, 5000),
          );
       })

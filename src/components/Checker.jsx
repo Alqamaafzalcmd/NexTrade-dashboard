@@ -15,10 +15,12 @@ const toastConfig = {
 
 import Swal from "sweetalert2";
 
+
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
+
 
 let isSessionExpired = false;
 
@@ -45,7 +47,7 @@ api.interceptors.response.use(
         },
       }).then(
         setTimeout(() => {
-          window.location.href = "http://localhost:5173/login";
+          window.location.href = import.meta.env.VITE_FRONTEND_URL;
         }, 5000),
       );
     }

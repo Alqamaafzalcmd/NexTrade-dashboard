@@ -8,7 +8,7 @@ const Positions = () => {
 
   useEffect(() => {
     api
-      .get("http://localhost:8080/positions", { withCredentials: true })
+      .get("/positions", { withCredentials: true })
       .then((res) => {
         setAllPositions(res.data);
       });

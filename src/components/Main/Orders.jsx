@@ -9,7 +9,7 @@ const Orders = () => {
 
   useEffect(() => {
     api
-      .get("http://localhost:8080/orders", { withCredentials: true })
+      .get("/orders", { withCredentials: true })
       .then((res) => {
         setOrders(res.data);
       });

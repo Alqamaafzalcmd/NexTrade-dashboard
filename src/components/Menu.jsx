@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import GeneralContext from "./GeneralContext";
 import Profile from "./Main/Profile";
-import api from "./Checker";
+import axios from "axios";
+
 
 const Menu = () => {
   const [selectMenu, setSelectMenu] = useState(0);
@@ -17,9 +18,12 @@ const Menu = () => {
   useEffect(() => {
     try {
       let fetchdata = async () => {
-        let res = await api.get("/users/info", {
-          withCredentials: true,
-        });
+        let res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/users/info`,
+          {
+            withCredentials: true,
+          },
+        );
         setInfo({
           username: res.data.username,
           useremail: res.data.useremail,

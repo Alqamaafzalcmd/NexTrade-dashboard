@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import GeneralContext from "./GeneralContext";
 import axios from "axios";
 import { toast, Bounce } from "react-toastify";
-
 const toastConfig = {
   position: "top-center",
   autoClose: 500,
@@ -23,7 +22,7 @@ const WithdrawFunds = () => {
   let handleWithdrawFunds = async () => {
     try {
       let res = await axios.post(
-        "http://localhost:8080/users/withdrawfunds",
+        `${import.meta.env.VITE_BACKEND_URL}/users/withdrawfunds`,
         { field: Number(field) },
         { withCredentials: true },
       );

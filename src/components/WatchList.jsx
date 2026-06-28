@@ -22,7 +22,9 @@ const WatchList = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("http://localhost:8080/watchlist");
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/watchlist`,
+      );
       if (res) {
         setWatchlist(res.data);
       }

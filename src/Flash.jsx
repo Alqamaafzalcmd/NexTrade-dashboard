@@ -6,9 +6,12 @@ function Flash() {
 
   useEffect(() => {
     const getMessage = async () => {
-      const res = await axios.get("http://localhost:8080/flash-message", {
-        withCredentials: true,
-      });
+      const res = await api.get(
+        `${import.meta.env.VITE_BACKEND_URL}/flash-message`,
+        {
+          withCredentials: true,
+        },
+      );
 
       if (res.data.success) {
         setFlash({

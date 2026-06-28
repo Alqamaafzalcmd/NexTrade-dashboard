@@ -41,9 +41,13 @@ const BuyActionWindow = ({ uid }) => {
 
     try {
       let destination = product === "MIS" ? "positions" : "holdings";
-      let res = await axios.post(`http://localhost:8080/${destination}/add`, data, {
-        withCredentials: true,
-      });
+      let res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/${destination}/add`,
+        data,
+        {
+          withCredentials: true,
+        },
+      );
       toast.success(res.data.message, toastConfig);
     } catch (err) {
       toast.error(err.response.data.message, toastConfig);
