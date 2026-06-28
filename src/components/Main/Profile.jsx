@@ -38,8 +38,8 @@ function Profile() {
    }, []);
 
   let handleLogoutClick = () => {
-    axios
-      .get("/auth/logout",{withCredentials:true})
+    api
+      .get(`/auth/logout`,{withCredentials:true})
       .then(() => {
      
          Swal.fire({
