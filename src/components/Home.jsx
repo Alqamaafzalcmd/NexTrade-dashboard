@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import Dashboard from "./Dashboard";
 import { GeneralContextProvider } from "./GeneralContext";
 import TopBar from "./TopBar";
+import Flash from "../Flash";
 
 const Home = () => {
 
@@ -39,6 +40,7 @@ const Home = () => {
 
   return (
     <GeneralContextProvider>
+      <Flash/>
       <TopBar />
       <Dashboard />
     </GeneralContextProvider>
