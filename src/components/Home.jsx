@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
@@ -7,15 +7,19 @@ import Dashboard from "./Dashboard";
 import { GeneralContextProvider } from "./GeneralContext";
 import TopBar from "./TopBar";
 import Flash from "../Flash";
+import api from "./Checker";
 
 const Home = () => {
-
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const fetch = useRef(false);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/auth`, {
+    if (fetch.current) return;
+    fetch.current = true;
+
+    api
+      .get(`/auth`, {
         withCredentials: true,
       })
       .then(() => {
@@ -30,7 +34,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return <Loader/>;
+    return <Loader />;
   }
 
   if (!authenticated) {
@@ -40,7 +44,7 @@ const Home = () => {
 
   return (
     <GeneralContextProvider>
-      <Flash/>
+      <Flash />
       <TopBar />
       <Dashboard />
     </GeneralContextProvider>
